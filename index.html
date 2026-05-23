@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Coverflow - One Page Portfolio</title>
+    <title>Hub ABACADA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="templatemo-3d-coverflow.css" rel="stylesheet">
 <!--
 -->
@@ -26,13 +27,12 @@
                     <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.5" />
                 </svg>
             </div>
-            <div class="logo-text">3D Coverflow</div>
+            <div class="logo-text">Hub ABACADA</div>
         </a>
         
         <nav class="main-menu" id="mainMenu">
-            <a href="#home" class="menu-item active">Home</a>
-            <a href="#about" class="menu-item">About</a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="menu-item external">GitHub</a>
+            <a href="#home" class="menu-item active">Início</a>
+            <a href="#about" class="menu-item">Sobre</a>
         </nav>
         
         <div class="menu-toggle" id="menuToggle">
@@ -46,8 +46,8 @@
     <section id="home" class="section">
         <div class="coverflow-wrapper">
             <div class="info">
-                <h2 id="current-title">Mountain Landscape</h2>
-                <p id="current-description">Majestic peaks covered in snow during golden hour</p>
+                <h2 id="current-title">Carregando...</h2>
+                <p id="current-description">Escolha um jogo</p>
             </div>
 
             <div class="coverflow-container" tabindex="0">
@@ -108,16 +108,12 @@
                     </div>
                 </div>
 
-                <button class="nav-button prev" onclick="navigate(-1)">‹</button>
-                <button class="nav-button next" onclick="navigate(1)">›</button>
+                <button class="nav-button prev" onclick="navigate(-1)"> ⬅ </button>
+                <button class="nav-button next" onclick="navigate(1)"> ➡ </button>
 
                 <div class="dots-container" id="dots"></div>
                 
-                <!-- Play/Pause Button -->
-                <button class="play-pause-button" id="playPauseBtn" onclick="toggleAutoplay()">
-                    <span class="play-icon">▶</span>
-                    <span class="pause-icon" style="display: none;">❚❚</span>
-                </button>
+                <a href="#" id="play-button" class="play-button">JOGAR</a>
             </div>
         </div>
     </section>
@@ -126,8 +122,8 @@
     <section id="about" class="section">
         <div class="about-content">
             <div class="about-header">
-                <h2>Discover 3D Coverflow</h2>
-                <p>A revolutionary way to showcase your visual content with stunning 3D effects and seamless interactions</p>
+                <h2>Conheça o ABACADA</h2>
+                <p>Criando jogos educacionais para crianças com deficiência intelectual da APAE.</p>
             </div>
             
             <div class="about-main">
@@ -138,46 +134,26 @@
                             <div class="corner-decoration bottom-right"></div>
                             
                             <div class="showcase-logo">
-                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="10" y="25" width="15" height="50" fill="white" transform="rotate(-15 17.5 50)" opacity="0.9" />
-                                    <rect x="35" y="15" width="15" height="70" fill="white" />
-                                    <rect x="60" y="25" width="15" height="50" fill="white" transform="rotate(15 67.5 50)" opacity="0.9" />
-                                    <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="2" opacity="0.3" />
-                                </svg>
+                                <img src="images/corrida-das-silabas.png" alt="Exemplo de Jogo" style="width: 100%; height: 100%; border-radius: 20px; object-fit: cover;">
                             </div>
                             
-                            <h3 class="showcase-title">3D Coverflow</h3>
-                            <p class="showcase-subtitle">Transform your image galleries into immersive 3D experiences</p>
-                            
-                            <div class="showcase-badges">
-                                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer" class="badge">HTML5</a>
-                                <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer" class="badge">CSS3</a>
-                                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer" class="badge">JavaScript</a>
-                                <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design" target="_blank" rel="noopener noreferrer" class="badge">Responsive</a>
-                            </div>
+                            <h3 class="showcase-title">Aprender Brincando</h3>
+                            <p class="showcase-subtitle">Jogos interativos e coloridos desenvolvidos com carinho.</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="about-info">
-                    <h3>Elevate Your Gallery Experience</h3>
-                    <p>3D Coverflow is brought to you by TemplateMo. Transform the way you present images with our cutting-edge 3D coverflow technology. Create immersive, interactive galleries that captivate your audience and leave a lasting impression.</p>
-                    <p>Whether you're showcasing portfolio pieces, product images, or creating an interactive story, our 3D coverflow brings your content to life with fluid animations and intuitive controls.</p>
+                    <h3>Educação Inclusiva</h3>
+                    <p>O <strong>ABACADA</strong> é um projeto dedicado a criar jogos educacionais lúdicos e interativos para crianças com deficiência intelectual, especialmente as atendidas pela APAE.</p>
+                    <p>Acreditamos que a aprendizagem deve ser uma experiência divertida e envolvente. Nossos jogos são desenhados para estimular habilidades cognitivas, leitura, sílabas e muito mais, através de interfaces amigáveis, coloridas e de fácil navegação.</p>
                     
                     <ul class="feature-list">
-                        <li>Smooth 3D transitions with hardware acceleration</li>
-                        <li>Touch-enabled navigation for mobile devices</li>
-                        <li>Customizable autoplay and timing controls</li>
-                        <li>Keyboard navigation support</li>
-                        <li>Reflection effects for added depth</li>
+                        <li>Foco no desenvolvimento cognitivo</li>
+                        <li>Cores vibrantes e animações divertidas</li>
+                        <li>Interface super fácil e acessível</li>
+                        <li>Incentiva a leitura e reconhecimento de palavras</li>
                     </ul>
-                    
-                    <a href="#contact" class="cta-button">
-                        Start Your Project
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </a>
                 </div>
             </div>
         </div>
@@ -187,11 +163,10 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-copyright">
-                © 2025 3D Coverflow. All rights reserved. | Designed by <a href="https://templatemo.com" target="_blank" rel="noopener noreferrer">TemplateMo</a>
+                © 2026 Hub ABACADA. Desenvolvido para APAE.
             </div>
             <div class="footer-links">
-                <a href="#privacy" onclick="event.preventDefault(); alert('Privacy Policy page would go here');">Privacy Policy</a>
-                <a href="#terms" onclick="event.preventDefault(); alert('Terms of Service page would go here');">Terms of Service</a>
+                <a href="#home">Voltar ao Topo</a>
             </div>
         </div>
     </footer>

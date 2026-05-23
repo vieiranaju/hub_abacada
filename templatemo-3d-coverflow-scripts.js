@@ -45,39 +45,48 @@ https://templatemo.com/tm-595-3d-coverflow
         const imageData = [
             {
                 title: "Bingo das Sílabas",
-                description: "Majestic peaks covered in snow during golden hour"
+                description: "Vamos brincar de bingo e formar palavras!",
+                url: "https://vieiranaju.github.io/bingo-de-silabas-HTML/"
             },
             {
                 title: "Caça ao Tesouro",
-                description: "A winding trail through ancient woodland"
+                description: "Encontre o tesouro escondido nas palavras!",
+                url: "https://hedropedro.github.io/CacaAoAbacada/"
             },
             {
                 title: "Corrida das Sílabas",
-                description: "Serene waters mirroring the surrounding landscape"
+                description: "Quem chega primeiro ganha!",
+                url: "https://educalza.github.io/Corrida-das-Silabas/"
             },
             {
                 title: "Ligue as Sílabas",
-                description: "Golden hour over endless ocean waves"
+                description: "Ligue os pontinhos e forme sílabas!",
+                url: "https://rafaeltomazgraciano.github.io/ligue-as-silabas/"
             },
             {
                 title: "O Monstrinho Faminto",
-                description: "Rolling sand dunes under vast blue skies"
+                description: "Alimente o monstrinho com as sílabas certas!",
+                url: "https://gabrielwitor.github.io/Monstrinho-Faminto/"
             },
             {
                 title: "Piscina Maluca",
-                description: "Countless stars illuminating the dark sky"
+                description: "Mergulhe na diversão!",
+                url: "https://istefanuto.github.io/jogoAbacada/"
             },
             {
                 title: "Robô Montador",
-                description: "Cascading water through lush green forest"
+                description: "Ajude o robô a montar as palavras!",
+                url: "https://pauloluzkk.github.io/Game-ABACADA/"
             },
             {
                 title: "Salão das Sílabas",
-                description: "Cascading water through lush green forest"
+                description: "Venha para o salão mais divertido!",
+                url: "https://juuhgb.github.io/salao-das-silabas/"
             },
             {
                 title: "Trem das Sílabas",
-                description: "Cascading water through lush green forest"
+                description: "Piuiiii! Embarque no trem do conhecimento!",
+                url: "https://giovanariber.github.io/trem-de-silabas-html/"
             }
         ];
 
@@ -90,10 +99,6 @@ https://templatemo.com/tm-595-3d-coverflow
         });
 
         const dots = document.querySelectorAll('.dot');
-        let autoplayInterval = null;
-        let isPlaying = true;
-        const playIcon = document.querySelector('.play-icon');
-        const pauseIcon = document.querySelector('.pause-icon');
 
         function updateCoverflow() {
             if (isAnimating) return;
@@ -143,6 +148,11 @@ https://templatemo.com/tm-595-3d-coverflow
             const currentData = imageData[currentIndex];
             currentTitle.textContent = currentData.title;
             currentDescription.textContent = currentData.description;
+            
+            const playButton = document.getElementById('play-button');
+            if (playButton) {
+                playButton.href = currentData.url;
+            }
             
             currentTitle.style.animation = 'none';
             currentDescription.style.animation = 'none';
@@ -255,40 +265,13 @@ https://templatemo.com/tm-595-3d-coverflow
             };
         });
 
-        // Autoplay functionality
-        function startAutoplay() {
-            autoplayInterval = setInterval(() => {
-                currentIndex = (currentIndex + 1) % items.length;
-                updateCoverflow();
-            }, 4000);
-            isPlaying = true;
-            playIcon.style.display = 'none';
-            pauseIcon.style.display = 'block';
-        }
-
-        function stopAutoplay() {
-            if (autoplayInterval) {
-                clearInterval(autoplayInterval);
-                autoplayInterval = null;
-            }
-            isPlaying = false;
-            playIcon.style.display = 'block';
-            pauseIcon.style.display = 'none';
-        }
-
-        function toggleAutoplay() {
-            if (isPlaying) {
-                stopAutoplay();
-            } else {
-                startAutoplay();
-            }
-        }
+        // Autoplay removed for better accessibility for kids
 
         function handleUserInteraction() {
-            stopAutoplay();
+            // Replaced stopAutoplay since it's disabled
         }
 
-        // Add event listeners to stop autoplay on manual navigation
+        // Add event listeners
         items.forEach((item) => {
             item.addEventListener('click', handleUserInteraction);
         });
@@ -378,14 +361,6 @@ https://templatemo.com/tm-595-3d-coverflow
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Form submission
-        function handleSubmit(event) {
-            event.preventDefault();
-            alert('Thank you for your message! We\'ll get back to you soon.');
-            event.target.reset();
-        }
-
         // Initialize
         updateCoverflow();
         container.focus();
-        startAutoplay();
