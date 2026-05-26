@@ -18,6 +18,9 @@ https://templatemo.com/tm-595-3d-coverflow
         const mainMenu = document.getElementById('mainMenu');
         let currentIndex = 3;
         let isAnimating = false;
+        const gameAudio = new Audio(); // objeto de áudio compartilhado (evita sobreposição)
+        let idleTimer = null;    // timer de 5s para falar ao entrar no jogo
+        let repeatTimer = null;  // timer de 60s para repetir enquanto idle
 
         // Mobile menu toggle
         menuToggle.addEventListener('click', () => {
@@ -46,72 +49,86 @@ https://templatemo.com/tm-595-3d-coverflow
             {
                 title: "Bingo das Sílabas",
                 description: "Vamos brincar de bingo e formar palavras!",
-                url: "https://vieiranaju.github.io/bingo-de-silabas-HTML/"
+                url: "https://vieiranaju.github.io/bingo-de-silabas-HTML/",
+                audio: "áudios/bingo_das_silabas.mp3"
             },
             {
                 title: "Caça ao Tesouro",
                 description: "Encontre o tesouro escondido nas palavras!",
-                url: "https://hedropedro.github.io/CacaAoAbacada/"
+                url: "https://hedropedro.github.io/CacaAoAbacada/",
+                audio: "áudios/caça_ao_tesouro.mp3"
             },
             {
                 title: "Corrida das Sílabas",
                 description: "Quem chega primeiro ganha!",
-                url: "https://educalza.github.io/Corrida-das-Silabas/"
+                url: "https://educalza.github.io/Corrida-das-Silabas/",
+                audio: "áudios/corrida_das_silabas.mp3"
             },
             {
                 title: "Ligue as Sílabas",
                 description: "Ligue os pontinhos e forme sílabas!",
-                url: "https://rafaeltomazgraciano.github.io/ligue-as-silabas/"
+                url: "https://rafaeltomazgraciano.github.io/ligue-as-silabas/",
+                audio: "áudios/ligue_as_silabas.mp3"
             },
             {
                 title: "O Monstrinho Faminto",
                 description: "Alimente o monstrinho com as sílabas certas!",
-                url: "https://gabrielwitor.github.io/Monstrinho-Faminto/"
+                url: "https://gabrielwitor.github.io/Monstrinho-Faminto/",
+                audio: "áudios/monstrinho_faminto.mp3"
             },
             {
                 title: "Piscina Maluca",
                 description: "Mergulhe na diversão!",
-                url: "https://istefanuto.github.io/jogoAbacada/"
+                url: "https://istefanuto.github.io/jogoAbacada/",
+                audio: "áudios/piscina_maluca.mp3"
             },
             {
                 title: "Robô Montador",
                 description: "Ajude o robô a montar as palavras!",
-                url: "https://pauloluzkk.github.io/Game-ABACADA/"
+                url: "https://pauloluzkk.github.io/Game-ABACADA/",
+                audio: "áudios/robo_montador.mp3"
             },
             {
                 title: "Salão das Sílabas",
                 description: "Venha para o salão mais divertido!",
-                url: "https://juuhgb.github.io/salao-das-silabas/"
+                url: "https://juuhgb.github.io/salao-das-silabas/",
+                audio: "áudios/salao_das_silabas.mp3"
             },
             {
                 title: "Trem das Sílabas",
                 description: "Piuiiii! Embarque no trem do conhecimento!",
-                url: "https://giovanariber.github.io/trem-de-silabas-html/"
+                url: "https://giovanariber.github.io/trem-de-silabas-html/",
+                audio: "áudios/trem_das_silabas.mp3"
             },
             {
                 title: "Escova Escova",
                 description: "Escove os dentes com as sílabas certas!",
-                url: "https://vitorhhiguchi.github.io/escova-escova-uenp/"
+                url: "https://vitorhhiguchi.github.io/escova-escova-uenp/",
+                audio: "áudios/escova_escova.mp3"
             },
             {
                 title: "Cobrinha das Sílabas",
                 description: "Guie a cobrinha e forme palavras!",
-                url: "https://dieegovieira.github.io/cobra-das-silabas/"
+                url: "https://dieegovieira.github.io/cobra-das-silabas/",
+                audio: "áudios/cobrinha_das_silabas.mp3"
             },
             {
                 title: "Pesca Sílabas",
                 description: "Lance a isca e pesque as sílabas certas!",
-                url: "https://m-valentim.github.io/pesca-silabas/"
+                url: "https://m-valentim.github.io/pesca-silabas/",
+                audio: "áudios/pesca_silabas.mp3"
             },
             {
                 title: "Enigma da Esfinge",
                 description: "Decifre os enigmas e aprenda brincando!",
-                url: "https://ilhayoshida.github.io/Enigma_da_Esfinge/"
+                url: "https://ilhayoshida.github.io/Enigma_da_Esfinge/",
+                audio: "áudios/enigma_da_esfinge.mp3"
             },
             {
                 title: "Indicabla",
                 description: "Um jogo cheio de desafios e diversão!",
-                url: "https://gustavkeller-23.github.io/DiscoGame/"
+                url: "https://gustavkeller-23.github.io/DiscoGame/",
+                audio: "áudios/indicabla.mp3"
             }
         ];
 
@@ -188,9 +205,39 @@ https://templatemo.com/tm-595-3d-coverflow
                 currentDescription.style.animation = 'fadeIn 0.6s forwards';
             }, 10);
 
+            // Tocar áudio imediatamente ao navegar + reiniciar timers de ociosidade
+            playCurrentAudio();
+            resetIdleTimers();
+
             setTimeout(() => {
                 isAnimating = false;
             }, 600);
+        }
+
+        // Toca o áudio do jogo atual (sem sobreposição)
+        function playCurrentAudio() {
+            const data = imageData[currentIndex];
+            if (!data || !data.audio) return;
+            gameAudio.pause();
+            gameAudio.currentTime = 0;
+            gameAudio.src = data.audio;
+            gameAudio.play().catch(() => {});
+        }
+
+        // Reinicia os timers de repetição automática de áudio
+        function resetIdleTimers() {
+            clearTimeout(idleTimer);
+            clearInterval(repeatTimer);
+
+            // Após 5s parado no jogo, fala o nome (inclui carga inicial)
+            idleTimer = setTimeout(() => {
+                playCurrentAudio();
+
+                // Repete a cada 60s enquanto o usuário estiver parado no mesmo jogo
+                repeatTimer = setInterval(() => {
+                    playCurrentAudio();
+                }, 60000);
+            }, 5000);
         }
 
         function navigate(direction) {
@@ -303,7 +350,7 @@ https://templatemo.com/tm-595-3d-coverflow
         // Autoplay removed for better accessibility for kids
 
         function handleUserInteraction() {
-            // Replaced stopAutoplay since it's disabled
+            // Navegação do usuário já toca o áudio e reinicia os timers via updateCoverflow
         }
 
         // Add event listeners
@@ -399,3 +446,6 @@ https://templatemo.com/tm-595-3d-coverflow
         // Initialize
         updateCoverflow();
         container.focus();
+
+        // Iniciar timers de áudio ocioso desde o carregamento da página
+        resetIdleTimers();
