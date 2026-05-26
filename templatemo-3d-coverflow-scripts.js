@@ -87,6 +87,31 @@ https://templatemo.com/tm-595-3d-coverflow
                 title: "Trem das Sílabas",
                 description: "Piuiiii! Embarque no trem do conhecimento!",
                 url: "https://giovanariber.github.io/trem-de-silabas-html/"
+            },
+            {
+                title: "Escova Escova",
+                description: "Escove os dentes com as sílabas certas!",
+                url: "https://vitorhhiguchi.github.io/escova-escova-uenp/"
+            },
+            {
+                title: "Cobrinha das Sílabas",
+                description: "Guie a cobrinha e forme palavras!",
+                url: "https://dieegovieira.github.io/cobra-das-silabas/"
+            },
+            {
+                title: "Pesca Sílabas",
+                description: "Lance a isca e pesque as sílabas certas!",
+                url: "https://m-valentim.github.io/pesca-silabas/"
+            },
+            {
+                title: "Enigma da Esfinge",
+                description: "Decifre os enigmas e aprenda brincando!",
+                url: "https://ilhayoshida.github.io/Enigma_da_Esfinge/"
+            },
+            {
+                title: "Indicabla",
+                description: "Um jogo cheio de desafios e diversão!",
+                url: "https://gustavkeller-23.github.io/DiscoGame/"
             }
         ];
 
@@ -152,6 +177,8 @@ https://templatemo.com/tm-595-3d-coverflow
             const playButton = document.getElementById('play-button');
             if (playButton) {
                 playButton.href = currentData.url;
+                playButton.target = '_blank';
+                playButton.rel = 'noopener noreferrer';
             }
             
             currentTitle.style.animation = 'none';
@@ -250,19 +277,27 @@ https://templatemo.com/tm-595-3d-coverflow
         items.forEach((item, index) => {
             const img = item.querySelector('img');
             const reflection = item.querySelector('.reflection');
-            
-            img.onload = function() {
 
-                this.parentElement.classList.remove('image-loading');
-                reflection.style.setProperty('--bg-image', `url(${this.src})`);
-                reflection.style.backgroundImage = `url(${this.src})`;
+            function applyReflection(imgEl) {
+                imgEl.parentElement.classList.remove('image-loading');
+                reflection.style.setProperty('--bg-image', `url(${imgEl.src})`);
+                reflection.style.backgroundImage = `url(${imgEl.src})`;
                 reflection.style.backgroundSize = 'cover';
                 reflection.style.backgroundPosition = 'center';
-            };
-            
-            img.onerror = function() {
-                this.parentElement.classList.add('image-loading');
-            };
+            }
+
+            // If the image already loaded (e.g. from cache), apply immediately
+            if (img.complete && img.naturalWidth > 0) {
+                applyReflection(img);
+            } else {
+                img.onload = function() {
+                    applyReflection(this);
+                };
+
+                img.onerror = function() {
+                    this.parentElement.classList.add('image-loading');
+                };
+            }
         });
 
         // Autoplay removed for better accessibility for kids
