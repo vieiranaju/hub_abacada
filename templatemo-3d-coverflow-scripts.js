@@ -18,9 +18,12 @@ https://templatemo.com/tm-595-3d-coverflow
         const mainMenu = document.getElementById('mainMenu');
         let currentIndex = 3;
         let isAnimating = false;
-        const gameAudio = new Audio(); // objeto de áudio compartilhado (evita sobreposição)
-        let idleTimer = null;    // timer de 5s para falar ao entrar no jogo
-        let repeatTimer = null;  // timer de 60s para repetir enquanto idle
+        const gameAudio    = new Audio();               // áudio do nome do jogo
+        const instrAudio   = new Audio('áudios/jogar.mp3'); // áudio de instrução
+        let idleTimer      = null;   // 5s antes de falar o nome
+        let repeatTimer    = null;   // repete nome a cada 3 min
+        let instrTimer     = null;   // repete instrução a cada 5 min
+        let homeVisible    = true;   // true enquanto #home estiver visível
 
         // Mobile menu toggle
         menuToggle.addEventListener('click', () => {
@@ -214,8 +217,22 @@ https://templatemo.com/tm-595-3d-coverflow
             }, 600);
         }
 
-        // Toca o áudio do jogo atual (sem sobreposição)
+        // ─── Funções de áudio ────────────────────────────────────────────────
+
+        // Para tudo imediatamente
+        function stopAllAudio() {
+            instrAudio.pause();
+            instrAudio.currentTime = 0;
+            gameAudio.pause();
+            gameAudio.currentTime = 0;
+            clearTimeout(idleTimer);
+            clearInterval(repeatTimer);
+            clearTimeout(instrTimer);
+        }
+
+        // Toca o nome do jogo atual (sem sobreposição)
         function playCurrentAudio() {
+            if (!homeVisible) return;
             const data = imageData[currentIndex];
             if (!data || !data.audio) return;
             gameAudio.pause();
@@ -224,20 +241,45 @@ https://templatemo.com/tm-595-3d-coverflow
             gameAudio.play().catch(() => {});
         }
 
-        // Reinicia os timers de repetição automática de áudio
+        // Toca instrução e, ao terminar, toca o nome do jogo
+        function playInstruction() {
+            if (!homeVisible) return;
+            gameAudio.pause();
+            gameAudio.currentTime = 0;
+            instrAudio.currentTime = 0;
+            instrAudio.play().catch(() => {});
+        }
+
+        // Quando a instrução terminar, toca o nome do jogo atual
+        instrAudio.addEventListener('ended', () => {
+            playCurrentAudio();
+        });
+
+        // Reinicia os timers de repetição do nome do jogo (após navegar)
         function resetIdleTimers() {
             clearTimeout(idleTimer);
             clearInterval(repeatTimer);
 
-            // Após 5s parado no jogo, fala o nome (inclui carga inicial)
+            // Após 5s parado no jogo, fala o nome
             idleTimer = setTimeout(() => {
                 playCurrentAudio();
 
-                // Repete a cada 60s enquanto o usuário estiver parado no mesmo jogo
+                // Repete a cada 3 minutos enquanto parado no mesmo jogo
                 repeatTimer = setInterval(() => {
                     playCurrentAudio();
-                }, 60000);
+                }, 180000);
             }, 5000);
+        }
+
+        // Inicia (ou reinicia) o ciclo da instrução a cada 5 minutos
+        function startInstructionCycle() {
+            clearTimeout(instrTimer);
+            playInstruction();
+
+            instrTimer = setTimeout(function repeat() {
+                if (homeVisible) playInstruction();
+                instrTimer = setTimeout(repeat, 300000); // 5 min
+            }, 300000);
         }
 
         function navigate(direction) {
@@ -443,9 +485,28 @@ https://templatemo.com/tm-595-3d-coverflow
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Initialize
+        // ─── Visibilidade da seção #home ────────────────────────────────────
+        const homeSection = document.getElementById('home');
+        const visibilityObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                homeVisible = entry.isIntersecting;
+                if (!homeVisible) {
+                    // Usuário saiu do carrossel: para tudo
+                    stopAllAudio();
+                } else {
+                    // Usuário voltou ao carrossel: reinicia ciclo
+                    startInstructionCycle();
+                    resetIdleTimers();
+                }
+            });
+        }, { threshold: 0.3 }); // dispara quando 30% da seção está visível
+
+        visibilityObserver.observe(homeSection);
+
+        // ─── Inicialização ───────────────────────────────────────────────────
         updateCoverflow();
         container.focus();
 
-        // Iniciar timers de áudio ocioso desde o carregamento da página
+        // Iniciar ciclo de instrução + timers de nome ao carregar
+        startInstructionCycle();
         resetIdleTimers();
